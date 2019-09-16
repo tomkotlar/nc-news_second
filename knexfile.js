@@ -14,7 +14,6 @@ const customConfig = {
   development: {
     connection: {
       database: 'nc_news'
-      
     }
   },
   test: {
