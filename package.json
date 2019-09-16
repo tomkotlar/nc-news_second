@@ -8,6 +8,7 @@
     "migrate-make": "knex migrate:make",
     "migrate-latest": "knex migrate:latest",
     "migrate-rollback": "knex migrate:rollback",
+    "dev": "nodemon listen.js",
     "seed": "knex seed:run",
     "test-utils": "mocha spec/utils.spec.js",
     "test": "mocha spec/app.spec.js"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
+    "nodemon": "^1.19.2",
     "supertest": "^4.0.2"
   }
 }
