@@ -106,8 +106,8 @@ describe("formatDates", () => {
         created_at: 406988514171
       }
     ];
-    expect(input).to.deep.equal(expectedResult)
-    expect(input).to.not.equal(actualResult)
+    expect(input).to.deep.equal(expectedResult);
+    expect(input).to.not.equal(actualResult);
   });
 });
 
@@ -159,7 +159,7 @@ describe("makeRefObj", () => {
     const expectedResult = { "What to Cook This Week": 31, "Stone Soup": 35 };
     expect(actualReulst).to.deep.equal(expectedResult);
   });
-  it('testing for mutation', () => {
+  it("testing for mutation", () => {
     const input = [
       {
         article_id: 31,
@@ -179,7 +179,7 @@ describe("makeRefObj", () => {
         topic: "cooking",
         author: "cooljmessy"
       }
-    ]
+    ];
     const actualResult = makeRefObj(input);
     const expectedResult = [
       {
@@ -200,9 +200,9 @@ describe("makeRefObj", () => {
         topic: "cooking",
         author: "cooljmessy"
       }
-    ]
-    expect(input).to.deep.equal(expectedResult)
-    expect(input).to.not.equal(actualResult)
+    ];
+    expect(input).to.deep.equal(expectedResult);
+    expect(input).to.not.equal(actualResult);
   });
 });
 
@@ -217,21 +217,21 @@ describe("formatComments", () => {
   it("returns changed created_by to author key array when array with one comment is passed", () => {
     const input = [
       {
-        body: 'Corporis magnam placeat quia nulla illum nisi.',
-        belongs_to: 'A BRIEF HISTORY OF FOOD—NO BIG DEAL',
-        created_by: 'weegembump',
+        body: "Corporis magnam placeat quia nulla illum nisi.",
+        belongs_to: "A BRIEF HISTORY OF FOOD—NO BIG DEAL",
+        created_by: "weegembump",
         votes: 3,
         created_at: 1504946266488
       }
     ];
-    const obj = { 'A BRIEF HISTORY OF FOOD—NO BIG DEAL': 29 };
+    const obj = { "A BRIEF HISTORY OF FOOD—NO BIG DEAL": 29 };
 
     const actualResult = formatComments(input, obj);
     const expectedResult = [
       {
-        body: 'Corporis magnam placeat quia nulla illum nisi.',
-        article_id: 29, //update
-        author: 'weegembump', //update
+        body: "Corporis magnam placeat quia nulla illum nisi.",
+        article_id: 29,
+        author: "weegembump",
         votes: 3,
         created_at: new Date(1504946266488)
       }
@@ -241,38 +241,38 @@ describe("formatComments", () => {
   it("returns changed created_by to author key array when array with multiple comment are passed", () => {
     const input = [
       {
-        body: 'Corporis magnam placeat quia nulla illum nisi.',
-        belongs_to: 'A BRIEF HISTORY OF FOOD—NO BIG DEAL',
-        created_by: 'weegembump',
+        body: "Corporis magnam placeat quia nulla illum nisi.",
+        belongs_to: "A BRIEF HISTORY OF FOOD—NO BIG DEAL",
+        created_by: "weegembump",
         votes: 3,
         created_at: 1504946266488
       },
       {
-        body: 'Reiciendis enim soluta a sed cumque dolor quia quod sint.',
-        belongs_to: 'Who are the most followed clubs and players on Instagram?',
-        created_by: 'happyamy2016',
+        body: "Reiciendis enim soluta a sed cumque dolor quia quod sint.",
+        belongs_to: "Who are the most followed clubs and players on Instagram?",
+        created_by: "happyamy2016",
         votes: 17,
         created_at: 1489789669732
       }
     ];
     const obj = {
-      'A BRIEF HISTORY OF FOOD—NO BIG DEAL': 29 ,
-      'Who are the most followed clubs and players on Instagram?': 19
+      "A BRIEF HISTORY OF FOOD—NO BIG DEAL": 29,
+      "Who are the most followed clubs and players on Instagram?": 19
     };
 
     const actualResult = formatComments(input, obj);
     const expectedResult = [
       {
-        body: 'Corporis magnam placeat quia nulla illum nisi.',
-        article_id: 29, 
-        author: "weegembump", 
+        body: "Corporis magnam placeat quia nulla illum nisi.",
+        article_id: 29,
+        author: "weegembump",
         votes: 3,
         created_at: new Date(1504946266488)
       },
       {
-        body: 'Reiciendis enim soluta a sed cumque dolor quia quod sint.',
+        body: "Reiciendis enim soluta a sed cumque dolor quia quod sint.",
         article_id: 19,
-        author: 'happyamy2016',
+        author: "happyamy2016",
         votes: 17,
         created_at: new Date(1489789669732)
       }
@@ -282,44 +282,43 @@ describe("formatComments", () => {
   it("checking for mutation", () => {
     const input = [
       {
-        body: 'Corporis magnam placeat quia nulla illum nisi.',
-        belongs_to: 'A BRIEF HISTORY OF FOOD—NO BIG DEAL',
-        created_by: 'weegembump',
+        body: "Corporis magnam placeat quia nulla illum nisi.",
+        belongs_to: "A BRIEF HISTORY OF FOOD—NO BIG DEAL",
+        created_by: "weegembump",
         votes: 3,
         created_at: 1504946266488
       },
       {
-        body: 'Reiciendis enim soluta a sed cumque dolor quia quod sint.',
-        belongs_to: 'Who are the most followed clubs and players on Instagram?',
-        created_by: 'happyamy2016',
+        body: "Reiciendis enim soluta a sed cumque dolor quia quod sint.",
+        belongs_to: "Who are the most followed clubs and players on Instagram?",
+        created_by: "happyamy2016",
         votes: 17,
         created_at: 1489789669732
       }
     ];
     const obj = {
-      'A BRIEF HISTORY OF FOOD—NO BIG DEAL': 29 ,
-      'Who are the most followed clubs and players on Instagram?': 19
+      "A BRIEF HISTORY OF FOOD—NO BIG DEAL": 29,
+      "Who are the most followed clubs and players on Instagram?": 19
     };
 
     const actualResult = formatComments(input, obj);
     const expectedResult = [
       {
-        body: 'Corporis magnam placeat quia nulla illum nisi.',
-        belongs_to: 'A BRIEF HISTORY OF FOOD—NO BIG DEAL',
-        created_by: 'weegembump',
+        body: "Corporis magnam placeat quia nulla illum nisi.",
+        belongs_to: "A BRIEF HISTORY OF FOOD—NO BIG DEAL",
+        created_by: "weegembump",
         votes: 3,
         created_at: 1504946266488
       },
       {
-        body: 'Reiciendis enim soluta a sed cumque dolor quia quod sint.',
-        belongs_to: 'Who are the most followed clubs and players on Instagram?',
-        created_by: 'happyamy2016',
+        body: "Reiciendis enim soluta a sed cumque dolor quia quod sint.",
+        belongs_to: "Who are the most followed clubs and players on Instagram?",
+        created_by: "happyamy2016",
         votes: 17,
         created_at: 1489789669732
       }
     ];
-    expect(input).to.deep.equal(expectedResult)
-    expect(input).to.not.equal(actualResult)
+    expect(input).to.deep.equal(expectedResult);
+    expect(input).to.not.equal(actualResult);
   });
 });
-
