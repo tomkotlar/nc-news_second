@@ -9,7 +9,7 @@ exports.up = function(knex) {
     commentsTable.text('body').notNullable()
 
 })
-};
+}; 
 
 exports.down = function(knex) {
     return knex.schema.dropTable('comments')
