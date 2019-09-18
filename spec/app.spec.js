@@ -244,26 +244,76 @@ describe("", () => {
         'body')
       })
     });
-    it('status 200: responds with array of comments for article_id, defaults asc sort to created_at', () => {
+    it('status 200: responds with array of comments for article_id, defaults desc sort to created_at', () => {
       return request(app)
       .get('/api/articles/1/comments')
       .expect(200)
       .then(({body}) => {
         //console.log(body.comments)
         expect(body.comments).to.be.an('array')
-        expect(body.comments).to.be.sortedBy('created_at')
+        expect(body.comments).to.be.descendingBy('created_at')
       })
     });
-    it('status 200: responds with array of comments for article_id, sort by votes ascending', () => {
+    it('status 200: responds with array of comments for article_id, sort by votes descending', () => {
       return request(app)
       .get('/api/articles/1/comments?sort_by=votes')
       .expect(200)
       .then(({body}) => {
         //console.log(body.comments)
         expect(body.comments).to.be.an('array')
+        expect(body.comments).to.be.descendingBy('votes')
+        
+      })
+    });
+    it('status 200: responds with array of comments for article_id, order by created_at defaults to descending', () => {
+      return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({body}) => {
+        //console.log(body.comments)
+        expect(body.comments).to.be.an('array')
+        expect(body.comments).to.be.descendingBy('created_at')
+      })
+    });
+    it('status 200: responds with array of comments for article_id, order by created_at to ascending', () => {
+      return request(app)
+      .get("/api/articles/1/comments?sort_by=created_at&order_by=asc")
+      .expect(200)
+      .then(({body}) => {
+       // console.log(body.comments)
+        expect(body.comments).to.be.an('array')
+        expect(body.comments).to.be.ascendingBy('created_at')
+      })
+    });
+    it('status 200: responds with array of comments for article_id, votes created_at to ascending', () => {
+      return request(app)
+      .get("/api/articles/1/comments?sort_by=votes&order_by=asc")
+      .expect(200)
+      .then(({body}) => {
+       // console.log(body.comments)
+        expect(body.comments).to.be.an('array')
         expect(body.comments).to.be.ascendingBy('votes')
       })
     });
 
+    xit("status 400: responds with error message for incorrect sort querry, that does not exist", () => {
+      return request(app)
+        .get("/api/articles/1/comments?sort_by=colorfull")
+        .expect(400)
+        .then(({ body }) => {
+         // console.log(body);
+          expect(body.msg).to.equal("bad request");
+        });
+    });
+    xit("status 404: responds with error message for incorrect path", () => {
+      return request(app)
+        .get('/api/articles/not_id/comments')
+        .expect(404)
+        .then(({ body }) => {
+         // console.log(body);
+          expect(body.msg).to.equal("route not found");
+        });
+    });
+  
   });
 });

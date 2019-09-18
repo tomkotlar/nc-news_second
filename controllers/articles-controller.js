@@ -85,8 +85,8 @@ exports.postArticleComment = (req, res, next) => {
 exports.getComments = (req, res, next) => {
  // console.log(req.body, req.params, req.query, req.method)
   const { article_id } = req.params; //'1'
-  const { sort_by} = req.query // 'age'
-  fetchComentsForArticleId(article_id, sort_by)
+  const { sort_by, order_by} = req.query // 'age'
+  fetchComentsForArticleId(article_id, sort_by, order_by)
         .then((comments) => {
      //console.log({comments})
     res.status(200).send({ comments });

@@ -17,8 +17,8 @@ exports.fetchArticleById = article_id => {
 };
 
 exports.updateArticleVote = (newVote, id) => {
-  return (
-    connection("articles")
+  
+   return connection("articles")
       .where("article_id", id)
       .increment("votes", newVote)
       // .where({article_id: articleId})
@@ -29,7 +29,7 @@ exports.updateArticleVote = (newVote, id) => {
           return Promise.reject({ status: 404, msg: "route not found" });
         else return res;
       })
-  );
+  
 };
 
 exports.insertArticleComment = ({ body, username }, articleID) => {
@@ -47,13 +47,13 @@ exports.insertArticleComment = ({ body, username }, articleID) => {
     .returning("*");
 };
 
-exports.fetchComentsForArticleId = (article_id, sort_by) => {
-  //console.log(article_id, sort_by)
-  const sortKey = sort_by || 'created_at'
-return connection
+exports.fetchComentsForArticleId = (article_id, sort_by="created_at", order_by="desc") => {
+
+ return connection
   .select("*")
   .from('comments')
   .where("article_id", article_id )
-  .orderBy(sortKey)
-
+  .orderBy(sort_by, order_by)
+  
+  
 }
