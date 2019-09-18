@@ -1,31 +1,48 @@
-const connection = require('../db/connection')
+const connection = require("../db/connection");
 
+exports.fetchArticleById = article_id => {
+  return connection
+    .select("articles.*")
+    .from("articles")
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .where("articles.article_id", article_id)
+    .groupBy("articles.article_id")
+    .count({ comment_count: "comments.article_id" })
+    .then(res => {
+      // console.log(res))
+      if (!res.length)
+        return Promise.reject({ status: 404, msg: "route not found" });
+      else return res;
+    });
+};
 
-exports.fetchArticlesById = (id) => {
-    return connection
-        .select('author', 
-        'title',
-        'article_id',
-        'body',
-        'topic',
-        'created_at',
-        'votes', 'comment_count')
-        .from('articles')
-        .join('comments.comment_id', )
-}
+exports.updateArticleVote = (newVote, id) => {
+  return (
+    connection("articles")
+      .where("article_id", id)
+      .increment("votes", newVote)
+      // .where({article_id: articleId})
+      // .update({votes: newVote})
+      .returning("*")
+      .then(res => {
+        if (!res.length)
+          return Promise.reject({ status: 404, msg: "route not found" });
+        else return res;
+      })
+  );
+};
 
+exports.insertArticleComment = ({ body, username }, articleID) => {
+  // console.log(username, body, articleID)
+  if (!body && !username)
+    return Promise.reject({ status: 400, msg: "bad request" });
 
-
-
-// {
-//     article: [
-//       {
-//         article_id: 1,
-//         title: 'Living in the shadow of a great man',
-//         body: 'I find this existence challenging',
-//         votes: 100,
-//         topic: 'mitch',
-//         author: 'butter_bridge',
-//         created_at: '2018-11-15T12:21:54.171Z'
-//       }]
-//     }
+  return connection
+    .insert({
+      body: body,
+      article_id: articleID,
+      author: username
+    })
+    .into("comments")
+    .returning("*");
+};

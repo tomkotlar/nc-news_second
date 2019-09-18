@@ -1,12 +1,78 @@
-const {fetchArticlesById} = require('../models/articles-model')
+const {fetchArticleById, updateArticleVote, insertArticleComment} = require('../models/articles-model')
 
-exports.getArticlesById = (req, res, next) => {
+exports.getArticleById = (req, res, next) => {
    // console.log(req.body, req.params, req.query, req.method)
     const {article_id} = req.params //{ article_id: '1' } 
-    fetchArticlesById(article_id)
+    fetchArticleById(article_id)
         .then((article) => {
-            //console.log()
+           // console.log( {article})
             res.status(200).send({article})
         })
         .catch(next)
 }
+
+//err => console.log(err)
+
+// {
+//     article: [
+//       {
+//         article_id: 1,
+//         title: "Living in the shadow of a great man",
+//         body: "I find this existence challenging",
+//         votes: 100,
+//         topic: "mitch",
+//         author: "butter_bridge",
+//         created_at: "2018-11-15T12:21:54.171Z",
+//         comment_count: "13"
+//       }
+//     ];
+//   }
+
+exports.patchArticleVote = (req, res, next) => {
+    //console.log(req.body, req.params, req.query, req.method) 
+    const { inc_votes }  = req.body 
+    const { article_id } = req.params
+    updateArticleVote(  inc_votes, article_id)
+    .then(([article]) => {
+        //console.log({article})
+        res.status(200).send({article})
+    })
+    .catch(next)
+}
+//err => console.log(err)
+// {
+//     article: {
+//       article_id: 1,
+//       title: 'Living in the shadow of a great man',
+//       body: 'I find this existence challenging',
+//       votes: 101,
+//       topic: 'mitch',
+//       author: 'butter_bridge',
+//       created_at: '2018-11-15T12:21:54.171Z'
+//     }
+//   }
+
+
+exports.postArticleComment = (req, res, next) => {
+    //console.log(req.body, req.params, req.query, req.method) 
+   // { username: 'rogersop', body: 'i love hip hop' } { article_id: '6' }
+   const {article_id} = req.params
+   insertArticleComment(req.body, article_id)
+        .then(([comment]) => {
+            //console.log({comment})
+            res.status(201).send({comment})
+        })
+        .catch(next)
+}
+//err => console.log(err)
+
+// {
+//     comment: {
+//       comment_id: 19,
+//       author: 'rogersop',
+//       article_id: 6,
+//       votes: 0,
+//       created_at: 2019-09-17T21:57:19.680Z,
+//       body: 'i love hip hop'
+//     }
+//   }
