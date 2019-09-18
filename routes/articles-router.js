@@ -2,7 +2,8 @@ const articlesRouter = require("express").Router();
 const {
   getArticleById,
   patchArticleVote,
-  postArticleComment
+  postArticleComment,
+  getComments
 } = require("../controllers/articles-controller");
 
 articlesRouter
@@ -13,5 +14,6 @@ articlesRouter
 articlesRouter  
   .route('/:article_id/comments')
   .post(postArticleComment)
+  .get(getComments)
 
 module.exports = { articlesRouter };

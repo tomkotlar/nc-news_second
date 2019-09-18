@@ -46,3 +46,14 @@ exports.insertArticleComment = ({ body, username }, articleID) => {
     .into("comments")
     .returning("*");
 };
+
+exports.fetchComentsForArticleId = (article_id, sort_by) => {
+  //console.log(article_id, sort_by)
+  const sortKey = sort_by || 'created_at'
+return connection
+  .select("*")
+  .from('comments')
+  .where("article_id", article_id )
+  .orderBy(sortKey)
+
+}

@@ -1,8 +1,13 @@
 process.env.NODE_ENV = "test";
 const { expect } = require("chai");
+const chai = require('chai')
+const chaiSorted = require('sams-chai-sorted')
 const app = require("../app");
 const connection = require("../db/connection");
 const request = require("supertest");
+
+chai.use(chaiSorted)
+
 
 describe("", () => {
   beforeEach(() => connection.seed.run());
@@ -224,5 +229,41 @@ describe("", () => {
           expect(body.msg).to.equal("unprocessable entity");
         });
     });
+  });
+  describe('GET /api/articles/:article_id/comments', () => {
+    it('status 200: responds with array of comments for article_id', () => {
+      return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({body}) => {
+        expect(body).to.be.an('object')
+        expect(body.comments[0]).contain.keys('comment_id',
+        'votes',
+        'created_at',
+        'author', 
+        'body')
+      })
+    });
+    it('status 200: responds with array of comments for article_id, defaults asc sort to created_at', () => {
+      return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({body}) => {
+        //console.log(body.comments)
+        expect(body.comments).to.be.an('array')
+        expect(body.comments).to.be.sortedBy('created_at')
+      })
+    });
+    it('status 200: responds with array of comments for article_id, sort by votes ascending', () => {
+      return request(app)
+      .get('/api/articles/1/comments?sort_by=votes')
+      .expect(200)
+      .then(({body}) => {
+        //console.log(body.comments)
+        expect(body.comments).to.be.an('array')
+        expect(body.comments).to.be.ascendingBy('votes')
+      })
+    });
+
   });
 });

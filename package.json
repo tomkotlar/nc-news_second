@@ -13,7 +13,6 @@
     "test-utils": "mocha spec/utils.spec.js",
     "test": "mocha spec/app.spec.js",
     "seed-test": "npm run setup-dbs && NODE_ENV=test knex seed:run"
-   
   },
   "repository": {
     "type": "git",
@@ -29,7 +28,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "knex": "^0.19.4",
-    "pg": "^7.12.1"
+    "pg": "^7.12.1",
+    "sams-chai-sorted": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
