@@ -17,7 +17,6 @@ describe("", () => {
         .get("/api/topics")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.topics)
           expect(body).to.be.an("object");
           expect(body.topics).to.be.an("array");
           expect(body.topics[0]).to.contain.keys("slug", "description");
@@ -31,19 +30,18 @@ describe("", () => {
           expect(body.msg).to.equal("route not found");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['patch', 'put', 'delete']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ("/api/topics")
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["patch", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/topics")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-
   });
   describe("GET /api/users/:username", () => {
     it("status 200: responds with a user object/ with properties username, avatar_url and name", () => {
@@ -51,7 +49,6 @@ describe("", () => {
         .get("/api/users/rogersop")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body)
           expect(body).to.be.an("object");
           expect(body.user).to.contain.keys("username", "avatar_url", "name");
         });
@@ -72,17 +69,17 @@ describe("", () => {
           expect(body.msg).to.equal("route not found");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['post', 'patch', 'put', 'delete']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ("/api/users/rogersop")
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["post", "patch", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/users/rogersop")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
   });
   describe("GET /api/articles/:article_id", () => {
@@ -91,7 +88,6 @@ describe("", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body)
           expect(body).to.be.an("object");
           expect(body.article[0]).to.contain.keys(
             "author",
@@ -109,7 +105,6 @@ describe("", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body);
           expect(body).to.be.an("object");
           expect(body.article[0]).to.contain.keys(
             "author",
@@ -139,17 +134,17 @@ describe("", () => {
           expect(body.msg).to.equal("bad request");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['post', 'put', 'delete']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ("/api/articles/1")
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["post", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles/1")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
   });
   describe("PATCH /api/articles/:article_id", () => {
@@ -159,7 +154,6 @@ describe("", () => {
         .send({ inc_votes: 1 })
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.article)
           expect(body).to.be.an("object");
           expect(body.article.votes).to.equal(101);
         });
@@ -191,17 +185,17 @@ describe("", () => {
           expect(body.msg).to.equal("bad request");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['post', 'put', 'delete']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ("/api/articles/1")
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["post", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles/1")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
   });
   describe("POST /api/articles/:article_id/comments", () => {
@@ -211,7 +205,6 @@ describe("", () => {
         .send({ username: "rogersop", body: "i love hip hop" })
         .expect(201)
         .then(({ body }) => {
-          //console.log(body)
           expect(body).to.be.an("object");
           expect(body.comment).to.contain.keys(
             "comment_id",
@@ -229,7 +222,6 @@ describe("", () => {
         .send({ body: "i love hip hop" })
         .expect(400)
         .then(({ body }) => {
-          //console.log(body)
           expect(body.msg).to.equal("bad request");
         });
     });
@@ -239,7 +231,6 @@ describe("", () => {
         .send({ usernifiiame: "rogersop", bonkdfdy: "i love hip hop" })
         .expect(400)
         .then(({ body }) => {
-          //console.log(body)
           expect(body.msg).to.equal("bad request");
         });
     });
@@ -253,7 +244,6 @@ describe("", () => {
         })
         .expect(400)
         .then(({ body }) => {
-          //console.log(body)
           expect(body.msg).to.equal("bad request");
         });
     });
@@ -263,7 +253,6 @@ describe("", () => {
         .send({})
         .expect(400)
         .then(({ body }) => {
-          //console.log(body)
           expect(body.msg).to.equal("bad request");
         });
     });
@@ -273,23 +262,21 @@ describe("", () => {
         .send({ username: "rogersopddddddddd", body: "i love hip hop" })
         .expect(422)
         .then(({ body }) => {
-          //console.log(body)
           expect(body.msg).to.equal("unprocessable entity");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['patch', 'put', 'delete']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ("/api/articles/6/comments")
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["patch", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles/6/comments")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-
   });
   describe("GET /api/articles/:article_id/comments", () => {
     it("status 200: responds with array of comments for article_id", () => {
@@ -312,7 +299,6 @@ describe("", () => {
         .get("/api/articles/1/comments")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.comments)
           expect(body.comments).to.be.an("array");
           expect(body.comments).to.be.descendingBy("created_at");
         });
@@ -322,7 +308,6 @@ describe("", () => {
         .get("/api/articles/1/comments?sort_by=votes")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.comments)
           expect(body.comments).to.be.an("array");
           expect(body.comments).to.be.descendingBy("votes");
         });
@@ -332,7 +317,6 @@ describe("", () => {
         .get("/api/articles/1/comments")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body.comments)
           expect(body.comments).to.be.an("array");
           expect(body.comments).to.be.descendingBy("created_at");
         });
@@ -342,7 +326,6 @@ describe("", () => {
         .get("/api/articles/1/comments?sort_by=created_at&order_by=asc")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body.comments)
           expect(body.comments).to.be.an("array");
           expect(body.comments).to.be.ascendingBy("created_at");
         });
@@ -352,7 +335,6 @@ describe("", () => {
         .get("/api/articles/1/comments?sort_by=votes&order_by=asc")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body.comments)
           expect(body.comments).to.be.an("array");
           expect(body.comments).to.be.ascendingBy("votes");
         });
@@ -362,7 +344,6 @@ describe("", () => {
         .get("/api/articles/milion/comments")
         .expect(400)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.msg).to.equal("bad request");
         });
     });
@@ -371,7 +352,6 @@ describe("", () => {
         .get("/api/articles/1/comments?sort_by=colorfull")
         .expect(400)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.msg).to.equal("bad request");
         });
     });
@@ -380,21 +360,20 @@ describe("", () => {
         .get("/api/articles/4555/comments")
         .expect(404)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.msg).to.equal("route not found");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['patch', 'put', 'delete']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ("/api/articles/6/comments")
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["patch", "put", "delete"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles/6/comments")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
   });
   describe("GET /api/articles", () => {
@@ -446,7 +425,6 @@ describe("", () => {
         .get("/api/articles?sort_by=votes")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body)
           expect(body.articles).to.be.an("array");
           expect(body.articles).to.be.descendingBy("votes");
         });
@@ -456,7 +434,6 @@ describe("", () => {
         .get("/api/articles")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body)
           expect(body.articles).to.be.an("array");
           expect(body.articles).to.be.descendingBy("votes");
         });
@@ -466,7 +443,6 @@ describe("", () => {
         .get("/api/articles?order_by=desc")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body)
           expect(body.articles).to.be.an("array");
           expect(body.articles).to.be.descendingBy("votes");
         });
@@ -476,7 +452,6 @@ describe("", () => {
         .get("/api/articles?order_by=asc")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body)
           expect(body.articles).to.be.an("array");
           expect(body.articles).to.be.ascendingBy("created_at");
         });
@@ -496,7 +471,6 @@ describe("", () => {
         .get("/api/articles?author=butter_bridge")
         .expect(200)
         .then(({ body }) => {
-          //console.log(body)
           expect(body.articles).to.be.an("array");
           expect(body.articles[0].author).to.equal("butter_bridge");
         });
@@ -506,7 +480,6 @@ describe("", () => {
         .get("/api/articles?topic=mitch")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body)
           expect(body.articles).to.be.an("array");
           expect(body.articles[0].topic).to.equal("mitch");
         });
@@ -516,7 +489,6 @@ describe("", () => {
         .get("/api/articlereaas")
         .expect(404)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.msg).to.equal("route not found");
         });
     });
@@ -525,38 +497,38 @@ describe("", () => {
         .get("/api/articles?authoddfdr=butter_bridge")
         .expect(400)
         .then(({ body }) => {
-          // console.log(body);
           expect(body.msg).to.equal("bad request");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['patch', 'put', 'delete', 'post']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ("/api/articles")
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["patch", "put", "delete", "post"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/articles")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
   });
-  describe('PATCH /api/comments/:comment_id', () => {
-    it('status 200: responds with updated comment', () => {
+  describe("PATCH /api/comments/:comment_id", () => {
+    it("status 200: responds with updated comment", () => {
       return request(app)
-        .patch('/api/comments/2')
-        .send({ inc_votes : 1 })
+        .patch("/api/comments/2")
+        .send({ inc_votes: 1 })
         .expect(200)
-        .then(({body}) => {
-          //expect(body).to.be.an('object')
-          expect(body.comment[0]).to.contain.keys('comment_id',
-            'author',
-            'article_id',
-            'votes',
-            'created_at',
-            'body')
-        })
+        .then(({ body }) => {
+          expect(body.comment[0]).to.contain.keys(
+            "comment_id",
+            "author",
+            "article_id",
+            "votes",
+            "created_at",
+            "body"
+          );
+        });
     });
     it("status 404: responds with error message for the invalid id", () => {
       return request(app)
@@ -579,7 +551,7 @@ describe("", () => {
     it("status 400: responds with error message for incorect value type format for updating data", () => {
       return request(app)
         .patch("/api/comments/invalid_id")
-        .send({ inc_votes: 'milion' })
+        .send({ inc_votes: "milion" })
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.equal("bad request");
@@ -588,51 +560,50 @@ describe("", () => {
     it("status 400: responds with error message for incorect key for updating data", () => {
       return request(app)
         .patch("/api/comments/invalid_id")
-        .send({ inc_votffdfdes: 'milion' })
+        .send({ inc_votffdfdes: "milion" })
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.equal("bad request");
         });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['put', 'post']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ('/api/comments/2')
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["put", "post"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/comments/2")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
   });
-  describe('DELETE /api/comments/:comment_id', () => {
-    it('status 204: responds with no content', () => {
+  describe("DELETE /api/comments/:comment_id", () => {
+    it("status 204: responds with no content", () => {
       return request(app)
-      .delete('/api/comments/7')
-      .expect(204)
+        .delete("/api/comments/7")
+        .expect(204);
     });
-    it('status 404: responds with error message for non existing route for invalid id', () => {
+    it("status 404: responds with error message for non existing route for invalid id", () => {
       return request(app)
-        .delete('/api/comments/898989')
+        .delete("/api/comments/898989")
         .expect(404)
-        .then(({body}) => {
-          expect(body.msg).to.equal('route not found')
-        })
+        .then(({ body }) => {
+          expect(body.msg).to.equal("route not found");
+        });
     });
-    it('status 405: invalid methods', () => {
-      const invalidMethods = ['put', 'post']
-      const methodPromises = invalidMethods.map((method) => {
-          return request(app)
-          [method] ('/api/comments/2')
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["put", "post"];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api/comments/2")
           .expect(405)
-          .then(({body}) => {
-            expect(body.msg).to.equal('method not allowed')
-          })
-      })
-      return Promise.all(methodPromises)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
     });
-    
   });
 });

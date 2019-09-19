@@ -1,19 +1,14 @@
-const {updateComment, removeComment} = require('../models/comments-model')
-
+const { updateComment, removeComment } = require("../models/comments-model");
 
 exports.patchComment = (req, res, next) => {
-    //console.log(req.body, req.params, req.query, req.method)
-    const{ inc_votes} = req.body 
-    const { comment_id } = req.params
-    updateComment(comment_id, inc_votes)
-        .then((comment) => {
-            //console.log({comment})
-            res.status(200).send({comment})
-        })
-        .catch(next)
-}
-
-//err => console.log(err)
+  const { inc_votes } = req.body;
+  const { comment_id } = req.params;
+  updateComment(comment_id, inc_votes)
+    .then(comment => {
+      res.status(200).send({ comment });
+    })
+    .catch(next);
+};
 // {
 //     comment: [
 //       {
@@ -28,11 +23,10 @@ exports.patchComment = (req, res, next) => {
 //   }
 
 exports.deleteComment = (req, res, next) => {
-    //console.log(req.body, req.params, req.query, req.method)
-   const { comment_id }  = req.params//'7'
-   removeComment(comment_id)
-        .then((comment) => {
-            res.sendStatus(204)
-        })
-        .catch(next)
-} 
+  const { comment_id } = req.params; //'7'
+  removeComment(comment_id)
+    .then(comment => {
+      res.sendStatus(204);
+    })
+    .catch(next);
+};

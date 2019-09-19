@@ -6,19 +6,14 @@ const {
   fetchArticles
 } = require("../models/articles-model");
 
-
 exports.getArticleById = (req, res, next) => {
-  // console.log(req.body, req.params, req.query, req.method)
   const { article_id } = req.params; //{ article_id: '1' }
   fetchArticleById(article_id)
     .then(article => {
-      // console.log( {article})
       res.status(200).send({ article });
     })
     .catch(next);
 };
-
-//err => console.log(err)
 
 // {
 //     article: [
@@ -36,17 +31,15 @@ exports.getArticleById = (req, res, next) => {
 //   }
 
 exports.patchArticleVote = (req, res, next) => {
-  //console.log(req.body, req.params, req.query, req.method)
   const { inc_votes } = req.body;
   const { article_id } = req.params;
   updateArticleVote(inc_votes, article_id)
     .then(([article]) => {
-      //console.log({article})
       res.status(200).send({ article });
     })
     .catch(next);
 };
-//err => console.log(err)
+
 // {
 //     article: {
 //       article_id: 1,
@@ -60,17 +53,14 @@ exports.patchArticleVote = (req, res, next) => {
 //   }
 
 exports.postArticleComment = (req, res, next) => {
-  //console.log(req.body, req.params, req.query, req.method)
   // { username: 'rogersop', body: 'i love hip hop' } { article_id: '6' }
   const { article_id } = req.params;
   insertArticleComment(req.body, article_id)
     .then(([comment]) => {
-      //console.log({comment})
       res.status(201).send({ comment });
     })
     .catch(next);
 };
-//err => console.log(err)
 
 // {
 //     comment: {
@@ -84,17 +74,14 @@ exports.postArticleComment = (req, res, next) => {
 //   }
 
 exports.getArticleComments = (req, res, next) => {
- // console.log(req.body, req.params, req.query, req.method)
   const { article_id } = req.params; //'1'
-  const { sort_by, order_by} = req.query // 'age'
+  const { sort_by, order_by } = req.query; // 'age'
   fetchComentsForArticleId(article_id, sort_by, order_by)
-        .then((comments) => {
-     //console.log({comments})
-    res.status(200).send({ comments })
-  })
-  .catch(next)
+    .then(comments => {
+      res.status(200).send({ comments });
+    })
+    .catch(next);
 };
-
 
 // {
 //     comments: [
@@ -108,18 +95,14 @@ exports.getArticleComments = (req, res, next) => {
 //       }]
 // }
 
-
 exports.getArticles = (req, res, next) => {
-      //console.log(req.body, req.params, req.query, req.method)
-      const { sort_by, order_by, author, topic } = req.query
-   fetchArticles(sort_by, order_by, author, topic)
-    .then((articles) => {
-        //console.log({articles})
-        res.status(200).send({articles})
+  const { sort_by, order_by, author, topic } = req.query;
+  fetchArticles(sort_by, order_by, author, topic)
+    .then(articles => {
+      res.status(200).send({ articles });
     })
-    .catch(err => console.log(err))
-}
-
+    .catch(next);
+};
 
 // {
 //     articles: [
