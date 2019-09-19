@@ -2,7 +2,8 @@ const {
   fetchArticleById,
   updateArticleVote,
   insertArticleComment,
-  fetchComentsForArticleId
+  fetchComentsForArticleId,
+  fetchArticles
 } = require("../models/articles-model");
 
 
@@ -82,15 +83,16 @@ exports.postArticleComment = (req, res, next) => {
 //     }
 //   }
 
-exports.getComments = (req, res, next) => {
+exports.getArticleComments = (req, res, next) => {
  // console.log(req.body, req.params, req.query, req.method)
   const { article_id } = req.params; //'1'
   const { sort_by, order_by} = req.query // 'age'
   fetchComentsForArticleId(article_id, sort_by, order_by)
         .then((comments) => {
      //console.log({comments})
-    res.status(200).send({ comments });
-  });
+    res.status(200).send({ comments })
+  })
+  .catch(next)
 };
 
 
@@ -105,3 +107,29 @@ exports.getComments = (req, res, next) => {
 //         body: 'The beautiful thing about treasure is that it exists.'
 //       }]
 // }
+
+
+exports.getArticles = (req, res, next) => {
+      //console.log(req.body, req.params, req.query, req.method)
+      const { sort_by, order_by, author, topic } = req.query
+   fetchArticles(sort_by, order_by, author, topic)
+    .then((articles) => {
+        //console.log({articles})
+        res.status(200).send({articles})
+    })
+    .catch(err => console.log(err))
+}
+
+
+// {
+//     articles: [
+//       {
+//         article_id: 1,
+//         title: 'Living in the shadow of a great man',
+//         body: 'I find this existence challenging',
+//         votes: 100,
+//         topic: 'mitch',
+//         author: 'butter_bridge',
+//         created_at: 2018-11-15T12:21:54.171Z
+//       }]
+//     }

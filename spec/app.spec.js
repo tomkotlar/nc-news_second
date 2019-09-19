@@ -1,13 +1,12 @@
 process.env.NODE_ENV = "test";
 const { expect } = require("chai");
-const chai = require('chai')
-const chaiSorted = require('sams-chai-sorted')
+const chai = require("chai");
+const chaiSorted = require("sams-chai-sorted");
 const app = require("../app");
 const connection = require("../db/connection");
 const request = require("supertest");
 
-chai.use(chaiSorted)
-
+chai.use(chaiSorted);
 
 describe("", () => {
   beforeEach(() => connection.seed.run());
@@ -230,90 +229,232 @@ describe("", () => {
         });
     });
   });
-  describe('GET /api/articles/:article_id/comments', () => {
-    it('status 200: responds with array of comments for article_id', () => {
+  describe("GET /api/articles/:article_id/comments", () => {
+    it("status 200: responds with array of comments for article_id", () => {
       return request(app)
-      .get('/api/articles/1/comments')
-      .expect(200)
-      .then(({body}) => {
-        expect(body).to.be.an('object')
-        expect(body.comments[0]).contain.keys('comment_id',
-        'votes',
-        'created_at',
-        'author', 
-        'body')
-      })
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.be.an("object");
+          expect(body.comments[0]).contain.keys(
+            "comment_id",
+            "votes",
+            "created_at",
+            "author",
+            "body"
+          );
+        });
     });
-    it('status 200: responds with array of comments for article_id, defaults desc sort to created_at', () => {
+    it("status 200: responds with array of comments for article_id, defaults desc sort to created_at", () => {
       return request(app)
-      .get('/api/articles/1/comments')
-      .expect(200)
-      .then(({body}) => {
-        //console.log(body.comments)
-        expect(body.comments).to.be.an('array')
-        expect(body.comments).to.be.descendingBy('created_at')
-      })
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+          //console.log(body.comments)
+          expect(body.comments).to.be.an("array");
+          expect(body.comments).to.be.descendingBy("created_at");
+        });
     });
-    it('status 200: responds with array of comments for article_id, sort by votes descending', () => {
+    it("status 200: responds with array of comments for article_id, sort by votes descending", () => {
       return request(app)
-      .get('/api/articles/1/comments?sort_by=votes')
-      .expect(200)
-      .then(({body}) => {
-        //console.log(body.comments)
-        expect(body.comments).to.be.an('array')
-        expect(body.comments).to.be.descendingBy('votes')
-        
-      })
+        .get("/api/articles/1/comments?sort_by=votes")
+        .expect(200)
+        .then(({ body }) => {
+          //console.log(body.comments)
+          expect(body.comments).to.be.an("array");
+          expect(body.comments).to.be.descendingBy("votes");
+        });
     });
-    it('status 200: responds with array of comments for article_id, order by created_at defaults to descending', () => {
+    it("status 200: responds with array of comments for article_id, order by created_at defaults to descending", () => {
       return request(app)
-      .get('/api/articles/1/comments')
-      .expect(200)
-      .then(({body}) => {
-        //console.log(body.comments)
-        expect(body.comments).to.be.an('array')
-        expect(body.comments).to.be.descendingBy('created_at')
-      })
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+          //console.log(body.comments)
+          expect(body.comments).to.be.an("array");
+          expect(body.comments).to.be.descendingBy("created_at");
+        });
     });
-    it('status 200: responds with array of comments for article_id, order by created_at to ascending', () => {
+    it("status 200: responds with array of comments for article_id, order by created_at to ascending", () => {
       return request(app)
-      .get("/api/articles/1/comments?sort_by=created_at&order_by=asc")
-      .expect(200)
-      .then(({body}) => {
-       // console.log(body.comments)
-        expect(body.comments).to.be.an('array')
-        expect(body.comments).to.be.ascendingBy('created_at')
-      })
+        .get("/api/articles/1/comments?sort_by=created_at&order_by=asc")
+        .expect(200)
+        .then(({ body }) => {
+          // console.log(body.comments)
+          expect(body.comments).to.be.an("array");
+          expect(body.comments).to.be.ascendingBy("created_at");
+        });
     });
-    it('status 200: responds with array of comments for article_id, votes created_at to ascending', () => {
+    it("status 200: responds with array of comments for article_id, votes to ascending", () => {
       return request(app)
-      .get("/api/articles/1/comments?sort_by=votes&order_by=asc")
-      .expect(200)
-      .then(({body}) => {
-       // console.log(body.comments)
-        expect(body.comments).to.be.an('array')
-        expect(body.comments).to.be.ascendingBy('votes')
-      })
+        .get("/api/articles/1/comments?sort_by=votes&order_by=asc")
+        .expect(200)
+        .then(({ body }) => {
+          // console.log(body.comments)
+          expect(body.comments).to.be.an("array");
+          expect(body.comments).to.be.ascendingBy("votes");
+        });
     });
-
-    xit("status 400: responds with error message for incorrect sort querry, that does not exist", () => {
+    it("status 400: responds with error message for incorrect id format", () => {
+      return request(app)
+        .get("/api/articles/milion/comments")
+        .expect(400)
+        .then(({ body }) => {
+          // console.log(body);
+          expect(body.msg).to.equal("bad request");
+        });
+    });
+    xit("status 400: responds with error message for querry does not match the colums", () => {
       return request(app)
         .get("/api/articles/1/comments?sort_by=colorfull")
         .expect(400)
         .then(({ body }) => {
-         // console.log(body);
+          // console.log(body);
           expect(body.msg).to.equal("bad request");
         });
     });
-    xit("status 404: responds with error message for incorrect path", () => {
+    it("status 404: responds with error message for incorrect path", () => {
       return request(app)
-        .get('/api/articles/not_id/comments')
+        .get("/api/articles/4555/comments")
         .expect(404)
         .then(({ body }) => {
-         // console.log(body);
+          // console.log(body);
           expect(body.msg).to.equal("route not found");
         });
     });
-  
+  });
+  describe.only("GET /api/articles", () => {
+    it("status 200: responds with array of articles of article objects", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.be.an("object");
+          expect(body.articles).to.be.an("array");
+          expect(body.articles[0]).to.contain.keys(
+            "author",
+            "title",
+            "article_id",
+            "topic",
+            "created_at",
+            "votes"
+          );
+        });
+    });
+    it("status 200: responds with array of articles of article objects including comment_count", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles).to.be.an("array");
+          expect(body.articles[0]).to.contain.keys(
+            "author",
+            "title",
+            "article_id",
+            "topic",
+            "created_at",
+            "votes",
+            'comment_count'
+          );
+        });
+    });
+    it("status 200: responds with array of articles sorted by any valid column defaults to date, desc", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles).to.be.an("array");
+          expect(body.articles).to.be.descendingBy("created_at");
+        });
+    });
+    it("status 200: responds with array of articles sort by any valid column/ query, desc", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes")
+        .expect(200)
+        .then(({ body }) => {
+         // console.log(body)
+          expect(body.articles).to.be.an("array");
+          expect(body.articles).to.be.descendingBy("votes")
+        });
+    });
+    it("status 200: responds with array of articles order by defaults to descending", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+         // console.log(body)
+          expect(body.articles).to.be.an("array");
+          expect(body.articles).to.be.descendingBy("votes")
+        });
+    });
+    it("status 200: responds with array of articles order by as votes query descending", () => {
+      return request(app)
+        .get("/api/articles?order_by=desc")
+        .expect(200)
+        .then(({ body }) => {
+         // console.log(body)
+          expect(body.articles).to.be.an("array");
+          expect(body.articles).to.be.descendingBy("votes")
+        });
+    });
+    it("status 200: responds with array of articles order by ascending query", () => {
+      return request(app)
+        .get("/api/articles?order_by=asc")
+        .expect(200)
+        .then(({ body }) => {
+         // console.log(body)
+          expect(body.articles).to.be.an("array");
+          expect(body.articles).to.be.ascendingBy("created_at")
+        });
+    });
+    it("status 200: responds with array of articles sort by created_at and order by ascending query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=created_at&order_by=asc")
+        .expect(200)
+        .then(({ body }) => {
+         // console.log(body)
+          expect(body.articles).to.be.an("array");
+          expect(body.articles).to.be.ascendingBy("created_at")
+        });
+    });
+    it("status 200: responds with array of articles which filters the articles by the username value specified in the query", () => {
+      return request(app)
+        .get("/api/articles?author=butter_bridge")
+        .expect(200)
+        .then(({ body }) => {
+         //console.log(body)
+          expect(body.articles).to.be.an("array");
+          expect(body.articles[0].author).to.equal("butter_bridge")
+        });
+    });
+    it("status 200: responds with array of articles which which filters the articles by the topic value specified in the query", () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({ body }) => {
+         // console.log(body)
+          expect(body.articles).to.be.an("array");
+          expect(body.articles[0].topic).to.equal("mitch")
+        });
+    });
+    it("status 404: responds with error message for incorrect path", () => {
+      return request(app)
+        .get("/api/articlereaas")
+        .expect(404)
+        .then(({ body }) => {
+          // console.log(body);
+          expect(body.msg).to.equal("route not found");
+        });
+    });
+    xit("status 400: responds with error message for incorrect query key", () => {
+      return request(app)
+        .get("/api/articles?authoddfdr=butter_bridge")
+        .expect(400)
+        .then(({ body }) => {
+          // console.log(body);
+          expect(body.msg).to.equal("bad request");
+        });
+    });
+
   });
 });
