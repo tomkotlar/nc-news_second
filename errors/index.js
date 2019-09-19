@@ -26,3 +26,7 @@ exports.custom400 = (err, req, res, next) => {
   exports.status500 = (req, res) => {
       res.status(500).send({msg: 'internal server error...(We are sorry)'})
   }
+
+  exports.status405 = (req, res) => {
+      res.status(405).send({msg: 'method not allowed'})
+  }
