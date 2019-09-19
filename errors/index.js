@@ -22,3 +22,7 @@ exports.custom400 = (err, req, res, next) => {
      res.status(422).send({msg: 'unprocessable entity'})
      else next(err)
   }
+
+  exports.status500 = (req, res) => {
+      res.status(500).send({msg: 'internal server error...(We are sorry)'})
+  }

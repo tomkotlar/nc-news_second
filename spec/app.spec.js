@@ -323,7 +323,7 @@ describe("", () => {
         });
     });
   });
-  describe.only("GET /api/articles", () => {
+  describe("GET /api/articles", () => {
     it("status 200: responds with array of articles of article objects", () => {
       return request(app)
         .get("/api/articles")
@@ -354,7 +354,7 @@ describe("", () => {
             "topic",
             "created_at",
             "votes",
-            'comment_count'
+            "comment_count"
           );
         });
     });
@@ -372,9 +372,9 @@ describe("", () => {
         .get("/api/articles?sort_by=votes")
         .expect(200)
         .then(({ body }) => {
-         // console.log(body)
+          // console.log(body)
           expect(body.articles).to.be.an("array");
-          expect(body.articles).to.be.descendingBy("votes")
+          expect(body.articles).to.be.descendingBy("votes");
         });
     });
     it("status 200: responds with array of articles order by defaults to descending", () => {
@@ -382,9 +382,9 @@ describe("", () => {
         .get("/api/articles")
         .expect(200)
         .then(({ body }) => {
-         // console.log(body)
+          // console.log(body)
           expect(body.articles).to.be.an("array");
-          expect(body.articles).to.be.descendingBy("votes")
+          expect(body.articles).to.be.descendingBy("votes");
         });
     });
     it("status 200: responds with array of articles order by as votes query descending", () => {
@@ -392,9 +392,9 @@ describe("", () => {
         .get("/api/articles?order_by=desc")
         .expect(200)
         .then(({ body }) => {
-         // console.log(body)
+          // console.log(body)
           expect(body.articles).to.be.an("array");
-          expect(body.articles).to.be.descendingBy("votes")
+          expect(body.articles).to.be.descendingBy("votes");
         });
     });
     it("status 200: responds with array of articles order by ascending query", () => {
@@ -402,9 +402,9 @@ describe("", () => {
         .get("/api/articles?order_by=asc")
         .expect(200)
         .then(({ body }) => {
-         // console.log(body)
+          // console.log(body)
           expect(body.articles).to.be.an("array");
-          expect(body.articles).to.be.ascendingBy("created_at")
+          expect(body.articles).to.be.ascendingBy("created_at");
         });
     });
     it("status 200: responds with array of articles sort by created_at and order by ascending query", () => {
@@ -412,9 +412,9 @@ describe("", () => {
         .get("/api/articles?sort_by=created_at&order_by=asc")
         .expect(200)
         .then(({ body }) => {
-         // console.log(body)
+          // console.log(body)
           expect(body.articles).to.be.an("array");
-          expect(body.articles).to.be.ascendingBy("created_at")
+          expect(body.articles).to.be.ascendingBy("created_at");
         });
     });
     it("status 200: responds with array of articles which filters the articles by the username value specified in the query", () => {
@@ -422,9 +422,9 @@ describe("", () => {
         .get("/api/articles?author=butter_bridge")
         .expect(200)
         .then(({ body }) => {
-         //console.log(body)
+          //console.log(body)
           expect(body.articles).to.be.an("array");
-          expect(body.articles[0].author).to.equal("butter_bridge")
+          expect(body.articles[0].author).to.equal("butter_bridge");
         });
     });
     it("status 200: responds with array of articles which which filters the articles by the topic value specified in the query", () => {
@@ -432,9 +432,9 @@ describe("", () => {
         .get("/api/articles?topic=mitch")
         .expect(200)
         .then(({ body }) => {
-         // console.log(body)
+          // console.log(body)
           expect(body.articles).to.be.an("array");
-          expect(body.articles[0].topic).to.equal("mitch")
+          expect(body.articles[0].topic).to.equal("mitch");
         });
     });
     it("status 404: responds with error message for incorrect path", () => {
@@ -454,6 +454,74 @@ describe("", () => {
           // console.log(body);
           expect(body.msg).to.equal("bad request");
         });
+    });
+  });
+  describe('PATCH /api/comments/:comment_id', () => {
+    it('status 200: responds with updated comment', () => {
+      return request(app)
+        .patch('/api/comments/2')
+        .send({ inc_votes : 1 })
+        .expect(200)
+        .then(({body}) => {
+          //expect(body).to.be.an('object')
+          expect(body.comment[0]).to.contain.keys('comment_id',
+            'author',
+            'article_id',
+            'votes',
+            'created_at',
+            'body')
+        })
+    });
+    it("status 404: responds with error message for the invalid id", () => {
+      return request(app)
+        .patch("/api/comments/888888")
+        .send({ inc_votes: 1 })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).to.equal("route not found");
+        });
+    });
+    it("status 400: responds with error message for the invalid id format", () => {
+      return request(app)
+        .patch("/api/comments/invalid_id")
+        .send({ inc_votes: 1 })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.equal("bad request");
+        });
+    });
+    it("status 400: responds with error message for incorect value type format for updating data", () => {
+      return request(app)
+        .patch("/api/comments/invalid_id")
+        .send({ inc_votes: 'milion' })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.equal("bad request");
+        });
+    });
+    it("status 400: responds with error message for incorect key for updating data", () => {
+      return request(app)
+        .patch("/api/comments/invalid_id")
+        .send({ inc_votffdfdes: 'milion' })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.equal("bad request");
+        });
+    });
+  });
+  describe('DELETE /api/comments/:comment_id', () => {
+    it('status 204: responds with no content', () => {
+      return request(app)
+      .delete('/api/comments/7')
+      .expect(204)
+    });
+    it('status 404: responds with error message for non existing route for invalid id', () => {
+      return request(app)
+        .delete('/api/comments/898989')
+        .expect(404)
+        .then(({body}) => {
+          expect(body.msg).to.equal('route not found')
+        })
     });
 
   });
