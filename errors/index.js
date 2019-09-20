@@ -21,7 +21,8 @@ exports.status422 = (err, req, res, next) => {
   else next(err);
 };
 
-exports.status500 = (req, res) => {
+exports.status500 = (err, req, res, next) => {
+  console.log(err)
   res.status(500).send({ msg: "internal server error...(We are sorry)" });
 };
 

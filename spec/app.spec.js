@@ -11,6 +11,45 @@ chai.use(chaiSorted);
 describe("", () => {
   beforeEach(() => connection.seed.run());
   after(() => connection.destroy());
+  describe('GET /api', () => {
+    it('status 200: respond with JSON describing all the available endpoints on API', () => {
+      return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({body}) => {
+          const input = {
+            "GET /api": {
+              "description": "serves up a json representation of all the available endpoints of the api"
+            },
+            "GET /api/topics": {
+              "description": "serves an array of all topics",
+              "queries": [],
+              "exampleResponse": {
+                "topics": [{ "slug": "football", "description": "Footie!" }]
+              }
+            },
+            "GET /api/articles": {
+              "description": "serves an array of all topics",
+              "queries": ["author", "topic", "sort_by", "order"],
+              "exampleResponse": {
+                "articles": [
+                  {
+                    "title": "Seafood substitutions are increasing",
+                    "topic": "cooking",
+                    "author": "weegembump",
+                    "body": "Text from the article..",
+                    "created_at": 1527695953341
+                  }
+                ]
+              }
+            }
+          }
+          expect(body).to.deep.equal(input)
+          expect(body).to.contain.keys("GET /api/topics")
+        })
+    });
+    
+  });
   describe("GET /api/topics", () => {
     it("status 200: responds with array of topic objects", () => {
       return request(app)
