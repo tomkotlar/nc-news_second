@@ -15,7 +15,7 @@ exports.fetchArticleById = article_id => {
     });
 };
 
-exports.updateArticleVote = (newVote, id) => {
+exports.updateArticleVote = (newVote = 0, id) => {
   return (
     connection("articles")
       .where("article_id", id)
@@ -44,6 +44,8 @@ exports.insertArticleComment = ({ body, username }, articleID) => {
 };
 
 exports.fetchComentsForArticleId = ( article_id, sort_by = "created_at",  order_by = "desc" ) => {
+  
+  
   return connection
     .select("*")
     .from("comments")

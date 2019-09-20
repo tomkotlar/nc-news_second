@@ -48,6 +48,18 @@ describe("", () => {
           expect(body).to.contain.keys("GET /api/topics")
         })
     });
+    it("status 405: invalid methods", () => {
+      const invalidMethods = ["patch", "put", "delete", 'post'];
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api")
+          .expect(405)
+          .then(({ body }) => {
+            expect(body.msg).to.equal("method not allowed");
+          });
+      });
+      return Promise.all(methodPromises);
+    });
     
   });
   describe("GET /api/topics", () => {
@@ -128,7 +140,7 @@ describe("", () => {
         .expect(200)
         .then(({ body }) => {
           expect(body).to.be.an("object");
-          expect(body.article[0]).to.contain.keys(
+          expect(body.article).to.contain.keys(
             "author",
             "title",
             "article_id",
@@ -145,7 +157,7 @@ describe("", () => {
         .expect(200)
         .then(({ body }) => {
           expect(body).to.be.an("object");
-          expect(body.article[0]).to.contain.keys(
+          expect(body.article).to.contain.keys(
             "author",
             "title",
             "article_id",
@@ -195,6 +207,16 @@ describe("", () => {
         .then(({ body }) => {
           expect(body).to.be.an("object");
           expect(body.article.votes).to.equal(101);
+        });
+    });
+    it("status 200: responds with the article when updated data are not provided", () => {
+      return request(app)
+        .patch("/api/articles/2")
+        .send({  })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.be.an("object");
+          expect(body.article.votes).to.deep.equal(body.article.votes);
         });
     });
     it("status 404: responds with error message for the invalid id", () => {
@@ -360,6 +382,15 @@ describe("", () => {
           expect(body.comments).to.be.descendingBy("created_at");
         });
     });
+    it("status 200: responds with array of comments for article_id, order by created_at defaults to descending", () => {
+      return request(app)
+        .get("/api/articles/5/comments?order_by=asc")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).to.be.an("array");
+          expect(body.comments).to.be.ascendingBy("created_at");
+        });
+    });
     it("status 200: responds with array of comments for article_id, order by created_at to ascending", () => {
       return request(app)
         .get("/api/articles/1/comments?sort_by=created_at&order_by=asc")
@@ -378,17 +409,17 @@ describe("", () => {
           expect(body.comments).to.be.ascendingBy("votes");
         });
     });
+    xit("status 200: responds with article comments for querry does not match the colums", () => {
+      return request(app)
+        .get("/api/articles/1/comments?sort_by=colorfull")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).to.equal("bad request"); //'42703'
+        });
+    });
     it("status 400: responds with error message for incorrect id format", () => {
       return request(app)
         .get("/api/articles/milion/comments")
-        .expect(400)
-        .then(({ body }) => {
-          expect(body.msg).to.equal("bad request");
-        });
-    });
-    xit("status 400: responds with error message for querry does not match the colums", () => {
-      return request(app)
-        .get("/api/articles/1/comments?sort_by=colorfull")
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.equal("bad request");
@@ -559,7 +590,8 @@ describe("", () => {
         .send({ inc_votes: 1 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.comment[0]).to.contain.keys(
+          expect(body).to.be.an('object')
+          expect(body.comment).to.contain.keys(
             "comment_id",
             "author",
             "article_id",
@@ -569,6 +601,41 @@ describe("", () => {
           );
         });
     });
+    it("status 200: responds with updated comment", () => {
+      return request(app)
+        .patch("/api/comments/2")
+        .send({ inc_votes: 0 })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.be.an('object')
+          expect(body.comment).to.contain.keys(
+            "comment_id",
+            "author",
+            "article_id",
+            "votes",
+            "created_at",
+            "body"
+          );
+        });
+    });
+    it("status 200: responds with updated comment", () => {
+      return request(app)
+        .patch("/api/comments/2")
+        .send({ })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.be.an('object')
+          expect(body.comment).to.contain.keys(
+            "comment_id",
+            "author",
+            "article_id",
+            "votes",
+            "created_at",
+            "body"
+          );
+        });
+    });
+
     it("status 404: responds with error message for the invalid id", () => {
       return request(app)
         .patch("/api/comments/888888")

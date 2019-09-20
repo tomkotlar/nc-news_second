@@ -19,6 +19,5 @@ exports.removeComment = (commentId) => {
     .then((res) => {
         if (res === 0)
         return Promise.reject({status: 404, msg: 'route not found'})
-        //else return res
     })
 }
