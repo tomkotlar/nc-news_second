@@ -1,7 +1,4 @@
-const app = require('./app')
-const PORT = procss.env.PORT || 9090
+const app = require("./app");
+const { PORT = 9090 } = process.env;
 
-app.listen(PORT,( err) => {
-    if (err) throw err
-    console.log(`...lisening to port ${PORT}.....`)
-})
+app.listen(PORT, () => console.log(`.....listening on ${PORT}...`));
