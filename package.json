@@ -8,8 +8,12 @@
     "migrate-make": "knex migrate:make",
     "migrate-latest": "knex migrate:latest",
     "migrate-rollback": "knex migrate:rollback",
+    "seed:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex seed:run",
+    "migrate-latest:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex migrate:latest",
+    "migrate-rollback:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex migrate:rollback",
     "dev": "nodemon listen.js",
     "seed": "knex seed:run",
+    "start": "node listen.js",
     "test-utils": "mocha spec/utils.spec.js",
     "test": "mocha spec/app.spec.js",
     "seed-test": "npm run setup-dbs && NODE_ENV=test knex seed:run"
