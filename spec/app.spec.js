@@ -121,7 +121,7 @@ describe("", () => {
         });
     });
     it("status 405: invalid methods", () => {
-      const invalidMethods = ["post", "patch", "put", "delete"];
+      const invalidMethods = ["post", "patch", "delete"];
       const methodPromises = invalidMethods.map(method => {
         return request(app)
           [method]("/api/users/rogersop")
@@ -308,7 +308,7 @@ describe("", () => {
           expect(body.msg).to.equal("bad request");
         });
     });
-    it("status 400: responds with error message for for post fields are empty", () => {
+    it("status 400: responds with error message for post fields are empty", () => {
       return request(app)
         .post("/api/articles/8/comments")
         .send({})
@@ -545,7 +545,7 @@ describe("", () => {
           expect(body.articles[0].author).to.equal("butter_bridge");
         });
     });
-    it("status 200: responds with array of articles which which filters the articles by the topic value specified in the query", () => {
+    it("status 200: responds with array of articles which filters the articles by the topic value specified in the query", () => {
       return request(app)
         .get("/api/articles?topic=mitch")
         .expect(200)

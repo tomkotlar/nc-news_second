@@ -40,12 +40,50 @@ exports.postArticleComment = (req, res, next) => {
 exports.getArticleComments = (req, res, next) => {
   const { article_id } = req.params; 
   const { sort_by, order_by } = req.query; 
-  fetchComentsForArticleId(article_id, sort_by, order_by)
-    .then(comments => {
-      res.status(200).send({ comments });
-    })
-    .catch(next);
+
+    const regex = /\d+/gm
+    
+    if (!regex.test(article_id)) {
+      return next({  status:400, msg: 'bad request' })
+    }
+
+    const article = fetchArticleById(article_id)
+    const comments = fetchComentsForArticleId(article_id, sort_by, order_by)
+    Promise.all([article, comments])
+      .then(([article, comments]) => {
+        if (article[0].comment_count === '0') {
+          res.status(200).send({comments: [ ] })
+        } else {
+          res.status(200).send({comments})
+        }
+        return comments
+      })
+      .catch(next)
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 exports.getArticles = (req, res, next) => {
