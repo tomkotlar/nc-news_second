@@ -453,7 +453,7 @@ describe("", () => {
         .expect(200)
         .then(({ body }) => {
           expect(body).to.be.an("object");
-          expect(body.articles).to.be.an("array");
+          //expect(body.articles).to.be.an("array");
           expect(body.articles[0]).to.contain.keys(
             "author",
             "title",
@@ -531,7 +531,6 @@ describe("", () => {
         .get("/api/articles?sort_by=created_at&order_by=asc")
         .expect(200)
         .then(({ body }) => {
-          // console.log(body)
           expect(body.articles).to.be.an("array");
           expect(body.articles).to.be.ascendingBy("created_at");
         });
