@@ -1,22 +1,63 @@
-# Northcoders News API
+# :newspaper: Northcoders News API
 
-**You can clone this repository but do not fork it**
 
-## Background
+The API is hosted on [Heroku](https://northcoder-news2019.herokuapp.com/api) with following endpoints:
+
+```http
+GET /api 
+
+GET /api/topics   
+
+GET /api/users/:username
+
+GET /api/articles
+
+GET /api/articles/:article_id
+PATCH /api/articles/:article_id
+
+POST /api/articles/:article_id/comments
+GET /api/articles/:article_id/comments
+
+PATCH /api/comments/:comment_id
+DELETE /api/comments/:comment_id
+
+
+```
+
+---
+To view the example of JSON data Please click on the rocket 
+
+#####  [:rocket:]( https://northcoder-news2019.herokuapp.com/api/) `/api` 
+
+#####  [:rocket:](https://northcoder-news2019.herokuapp.com/api/topics) `/api/topics`
+
+#####  [:rocket:](https://northcoder-news2019.herokuapp.com/api/users/jessjelly) `/api/users/:username`
+
+#####  [:rocket:](https://northcoder-news2019.herokuapp.com/api/articles) `/api/articles` 
+
+#####  [:rocket:](https://northcoder-nes2019.herokuapp.com/api/articles/1) `/api/articles/:article_id` 
+
+#####  [:rocket:](https://northcoder-news2019.herokuapp.com/api/articles/1/comments)  `/api/articles/:article_id/comments`
+
+
+
+
+**You can clone this repository **
+## Step 1 - Setting up your own repository
+
+```bash
+git clone https://github.com/tomkotlar/nc-news_second
+
+cd be-nc-news
+```
+
+
 
 We will be building the API to use in the Northcoders News Sprint during the Front End block of the course.
 
 Your database will be PSQL, and you will interact with it using [Knex](https://knexjs.org).
 
-## Step 1 - Setting up your own repository
 
-Clone this repo:
-
-```bash
-git clone https://github.com/northcoders/be-nc-news
-
-cd be-nc-news
-```
 
 On GitHub create your own **public** repository for your project. **Make sure NOT to initialise it with a README or .gitignore.**
 
