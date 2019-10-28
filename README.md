@@ -1,7 +1,7 @@
 # :newspaper: Northcoders News API
 
 
-The API is hosted on [Heroku](https://northcoder-news2019.herokuapp.com/api) with following endpoints:
+The [API](https://northcoder-news2019.herokuapp.com/api) is hosted on Heroku with following endpoints:
 
 ```http
 GET /api 
