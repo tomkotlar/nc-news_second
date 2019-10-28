@@ -16,17 +16,15 @@ exports.fetchArticleById = article_id => {
 };
 
 exports.updateArticleVote = (newVote = 0, id) => {
-  return (
-    connection("articles")
-      .where("article_id", id)
-      .increment("votes", newVote)
-      .returning("*")
-      .then(res => {
-        if (!res.length)
-          return Promise.reject({ status: 404, msg: "route not found" });
-        else return res;
-      })
-  );
+  return connection("articles")
+    .where("article_id", id)
+    .increment("votes", newVote)
+    .returning("*")
+    .then(res => {
+      if (!res.length)
+        return Promise.reject({ status: 404, msg: "route not found" });
+      else return res;
+    });
 };
 
 exports.insertArticleComment = ({ body, username }, articleID) => {
@@ -43,9 +41,11 @@ exports.insertArticleComment = ({ body, username }, articleID) => {
     .returning("*");
 };
 
-exports.fetchComentsForArticleId = ( article_id, sort_by = "created_at",  order_by = "desc" ) => {
-  
-  
+exports.fetchComentsForArticleId = (
+  article_id,
+  sort_by = "created_at",
+  order_by = "desc"
+) => {
   return connection
     .select("*")
     .from("comments")
@@ -58,7 +58,15 @@ exports.fetchComentsForArticleId = ( article_id, sort_by = "created_at",  order_
     });
 };
 
-exports.fetchArticles = (sort_by = "created_at", order_by = "desc", author, topic) => {
+
+
+
+exports.fetchArticles = (
+  sort_by = "created_at",
+  order_by = "desc",
+  author,
+  topic
+) => {
   return connection
     .select("articles.*")
     .from("articles")
@@ -66,9 +74,9 @@ exports.fetchArticles = (sort_by = "created_at", order_by = "desc", author, topi
     .groupBy("articles.article_id")
     .count({ comment_count: "comments.article_id" })
     .orderBy(sort_by, order_by)
-    .modify((queryData) => {
-      if (author) queryData.where('articles.author', author)
-      if (topic) queryData.where('articles.topic', topic)
-      else queryData
-    })
+    .modify(queryData => {
+      if (author) queryData.where("articles.author", author);
+      if (topic) queryData.where("articles.topic", topic);
+      else queryData;
+    });
 };
