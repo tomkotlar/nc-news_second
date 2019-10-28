@@ -39,10 +39,20 @@ To view the example of JSON data Please click on the rocket
 
 #####  [:rocket:](https://northcoder-news2019.herokuapp.com/api/articles/1/comments)  `/api/articles/:article_id/comments`
 
+```
 
 
 
-**You can clone this repository **
+```
+dependencies: 
+NodeJS, Axios, Cors, PostgreSQL, Knex 
+
+
+
+
+
+
+
 ## Step 1 - Setting up your own repository
 
 ```bash
