@@ -295,19 +295,6 @@ describe("", () => {
           expect(body.msg).to.equal("bad request");
         });
     });
-    xit("status 400: responds with error message for adding non-existent colums", () => {
-      return request(app)
-        .post("/api/articles/6/comments")
-        .send({
-          username: "rogersop",
-          favorite_animal: 999,
-          body: "i love hip hop"
-        })
-        .expect(400)
-        .then(({ body }) => {
-          expect(body.msg).to.equal("bad request");
-        });
-    });
     it("status 400: responds with error message for post fields are empty", () => {
       return request(app)
         .post("/api/articles/8/comments")
@@ -409,9 +396,9 @@ describe("", () => {
           expect(body.comments).to.be.ascendingBy("votes");
         });
     });
-    xit("status 200: responds with article comments for querry does not match the colums", () => {
+    it("status 400: responds with article comments for querry does not match the colums", () => {
       return request(app)
-        .get("/api/articles/1/comments?sort_by=colorfull")
+        .get("/api/articles/1/comments?sort_by=not-a-valid-column")
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.equal("bad request"); //'42703'
@@ -433,6 +420,15 @@ describe("", () => {
           expect(body.msg).to.equal("route not found");
         });
     });
+
+    it("status 200: responds with empty array when the article exist but has no comments", () => {
+      return request(app)
+        .get("/api/articles/2/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.comments).to.be.an("array");
+        });
+    });
     it("status 405: invalid methods", () => {
       const invalidMethods = ["patch", "put", "delete"];
       const methodPromises = invalidMethods.map(method => {
@@ -447,24 +443,24 @@ describe("", () => {
     });
   });
   describe("GET /api/articles", () => {
-    it("status 200: responds with array of articles of article objects", () => {
+    it("status 200: responds with array of article objects", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
         .then(({ body }) => {
-          expect(body).to.be.an("object");
-          //expect(body.articles).to.be.an("array");
+          expect(body.articles).to.be.an("array");
           expect(body.articles[0]).to.contain.keys(
             "author",
             "title",
             "article_id",
             "topic",
             "created_at",
-            "votes"
+            "votes",
+            "body"
           );
         });
     });
-    it("status 200: responds with array of articles of article objects including comment_count", () => {
+    it("status 200: responds with array of articles objects including comment_count", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -561,9 +557,17 @@ describe("", () => {
           expect(body.msg).to.equal("route not found");
         });
     });
-    xit("status 400: responds with error message for incorrect query key", () => {
+    it("status 404: responds with error message for author which does not exist", () => {
       return request(app)
-        .get("/api/articles?authoddfdr=butter_bridge")
+        .get("/api/articles?author=not-an-author")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).to.equal("Author does not exist");
+        });
+    });
+    it("status 400: responds with error message for sort_by colum, which does not exist", () => {
+      return request(app)
+        .get("/api/articles?sort_by=not-a-colum")
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.equal("bad request");

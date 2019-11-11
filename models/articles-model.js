@@ -1,4 +1,6 @@
-const connection = require("../db/connection");
+const connection = require("../db/connection")
+
+const { topicExist, authorExist} = require("./utils")
 
 exports.fetchArticleById = article_id => {
   return connection
@@ -10,10 +12,10 @@ exports.fetchArticleById = article_id => {
     .count({ comment_count: "comments.article_id" })
     .then(res => {
       if (!res.length)
-        return Promise.reject({ status: 404, msg: "route not found" });
-      else return res;
-    });
-};
+        return Promise.reject({ status: 404, msg: "route not found" })
+      else return res
+    })
+}
 
 exports.updateArticleVote = (newVote = 0, id) => {
   return connection("articles")
@@ -22,14 +24,14 @@ exports.updateArticleVote = (newVote = 0, id) => {
     .returning("*")
     .then(res => {
       if (!res.length)
-        return Promise.reject({ status: 404, msg: "route not found" });
-      else return res;
-    });
-};
+        return Promise.reject({ status: 404, msg: "route not found" })
+      else return res
+    })
+}
 
 exports.insertArticleComment = ({ body, username }, articleID) => {
   if (!body && !username)
-    return Promise.reject({ status: 400, msg: "bad request" });
+    return Promise.reject({ status: 400, msg: "bad request" })
 
   return connection
     .insert({
@@ -38,8 +40,8 @@ exports.insertArticleComment = ({ body, username }, articleID) => {
       author: username
     })
     .into("comments")
-    .returning("*");
-};
+    .returning("*")
+}
 
 exports.fetchComentsForArticleId = (
   article_id,
@@ -51,15 +53,12 @@ exports.fetchComentsForArticleId = (
     .from("comments")
     .where("article_id", article_id)
     .orderBy(sort_by, order_by)
-    .then(res => {
-      if (!res.length)
-        return Promise.reject({ status: 404, msg: "route not found" });
-      else return res;
-    });
-};
-
-
-
+    .then(comments => {
+      if (!article_id)
+        return Promise.reject({ status: 404, msg: "route not found" })
+      else return comments
+    })
+}
 
 exports.fetchArticles = (
   sort_by = "created_at",
@@ -67,6 +66,9 @@ exports.fetchArticles = (
   author,
   topic
 ) => {
+  if (!["desc", "asc"].includes(order_by)) {
+    return Promise.reject({ status: 400, msg: "bad request" })
+  }
   return connection
     .select("articles.*")
     .from("articles")
@@ -75,8 +77,19 @@ exports.fetchArticles = (
     .count({ comment_count: "comments.article_id" })
     .orderBy(sort_by, order_by)
     .modify(queryData => {
-      if (author) queryData.where("articles.author", author);
-      if (topic) queryData.where("articles.topic", topic);
-      else queryData;
-    });
-};
+      if (author) queryData.where("articles.author", author)
+      if (topic) queryData.where("articles.topic", topic)
+    })
+    .then(articles => {
+      if (!articles.length) {
+        return Promise.all([articles, authorExist(author), topicExist(topic)])
+      }
+      return [articles]
+    })
+    .then(([articles]) => {
+      return articles.map(element => {
+        element.comment_count = +element.comment_count
+        return element
+      })
+    })
+}

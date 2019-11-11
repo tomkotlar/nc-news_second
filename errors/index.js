@@ -8,7 +8,7 @@ exports.custom400 = (err, req, res, next) => {
 };
 
 exports.status400 = (err, req, res, next) => {
-  const codePSQL = ["22P02", "23502"];
+  const codePSQL = ["22P02", "23502", "42703"];
   if (codePSQL.includes(err.code))
     res.status(400).send({ msg: err.msg || "bad request" });
   else next(err);
@@ -22,7 +22,6 @@ exports.status422 = (err, req, res, next) => {
 };
 
 exports.status500 = (err, req, res, next) => {
-  console.log(err)
   res.status(500).send({ msg: "internal server error...(We are sorry)" });
 };
 
