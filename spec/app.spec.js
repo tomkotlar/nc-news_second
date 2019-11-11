@@ -38,11 +38,38 @@ describe("", () => {
                     "topic": "cooking",
                     "author": "weegembump",
                     "body": "Text from the article..",
-                    "created_at": 1527695953341
+                    "created_at": "2018-05-30T15:59:13.341Z"
                   }
                 ]
               }
-            }
+            },
+            "GET /api/users/username": {
+                 "avatar_url": "https://www.tumbit.com/profile-image/4/original/mr-grumpy.jpg",
+                 "description": "serves an object username",
+                 "name": "Paul Grump",
+                 "username": "grumpy19",
+               },
+               "GET /api/articles/1/comments": {
+                   "article_id": 1,
+                   "author": "grumpy19",
+                   "body": "Error est qui id corrupti et quod enim accusantium minus. Deleniti quae ea magni officiis et qui suscipit non.",
+                   "comment_id": 44,
+                   "created_at": "2017-11-20T08:58:48.322Z",
+                  "description": "serves an object of comments for article id",
+                   "votes": 4
+                  }, 
+                  "GET /api/articles/1": {
+                       "article_id": 1,
+                       "author": "jessjelly",
+                       "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
+                       "comment_count": "8",
+                       "created_at": "2016-08-18T12:07:52.389Z",
+                       "description": "serves an object for article id",
+                       "title": "Running a Node App",
+                       "topic": "coding",
+                       "votes": 0,
+                     }
+
           }
           expect(body).to.deep.equal(input)
           expect(body).to.contain.keys("GET /api/topics")

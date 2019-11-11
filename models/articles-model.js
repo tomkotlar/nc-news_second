@@ -66,9 +66,7 @@ exports.fetchArticles = (
   author,
   topic
 ) => {
-  if (!["desc", "asc"].includes(order_by)) {
-    return Promise.reject({ status: 400, msg: "bad request" })
-  }
+  
   return connection
     .select("articles.*")
     .from("articles")
