@@ -41,7 +41,7 @@ To view the example of JSON data Please click on the rocket
 
 
 
-## Instructions 
+## :clipboard: Instructions 
 
 On GitHub create your own **public** repository for your project. **Make sure NOT to initialise it with a README or .gitignore.**
 
@@ -58,7 +58,7 @@ git remote add origin <YOUR-GITHUB-URL>
 # You can confirm this by checking the new git remote.
 ``` 
 
-###  Setting up your own repository
+###  :open_file_folder: Setting up your own repository
 
 ```bash
 git clone https://github.com/tomkotlar/nc-news_second
@@ -67,7 +67,7 @@ cd be-nc-news
 ```
 
 
-###  Install
+###  :dvd: Install
 
 ```bash
 npm install
@@ -77,7 +77,7 @@ You will install dependencies:
 [NodeJS](https://nodejs.org/en/) | [Cors](https://www.npmjs.com/package/cors) |  [PostgreSQL](https://www.npmjs.com/package/pg) | [Knex](https://www.npmjs.com/package/knex) | 
 [Express](https://www.npmjs.com/package/express)
 
-###  Setup databese 
+###  :books: Setup databese 
 
 ```bash
 npm run setup-dbs
@@ -86,7 +86,7 @@ npm run seed
 
 ```
 
-###  Local Server
+###  :computer: Local Server
 
 ```bash
 npm run start
@@ -94,7 +94,7 @@ npm run start
 ```
 
 
-###  Running the test 
+###  :chart_with_upwards_trend: Running the test 
 
 ```bash
 npm test
