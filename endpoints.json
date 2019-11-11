@@ -57,7 +57,7 @@
 
 {
   "GET /api/articles/1/comments" : {
-   "description": "serves an object of comments for article id",
+   "description": "serves an object of comments for article id"
     {
       "comment_id": 44,
       "author": "grumpy19",
