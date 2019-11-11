@@ -40,15 +40,6 @@ To view the example of JSON data Please click on the rocket
 #####  [:rocket:](https://northcoder-news2019.herokuapp.com/api/articles/1/comments)  `/api/articles/:article_id/comments`
 
 
-dependencies: 
-[NodeJS](https://nodejs.org/en/) |  [Axios](https://www.npmjs.com/package/axios) |  [Cors](https://www.npmjs.com/package/cors) |  [PostgreSQL](https://www.npmjs.com/package/pg) | [Knex](https://www.npmjs.com/package/knex) | 
-[Express](https://www.npmjs.com/package/express)
-
-
-
-
-
-
 
 ## Instructions 
 
@@ -76,11 +67,39 @@ cd be-nc-news
 ```
 
 
+###  Install
+
+```bash
+npm install
+
+```
+You will install dependencies: 
+[NodeJS](https://nodejs.org/en/) | [Cors](https://www.npmjs.com/package/cors) |  [PostgreSQL](https://www.npmjs.com/package/pg) | [Knex](https://www.npmjs.com/package/knex) | 
+[Express](https://www.npmjs.com/package/express)
+
+###  Setup databese 
+
+```bash
+npm run setup-dbs
+
+npm run seed
+
+```
+
+###  Local Server
+
+```bash
+npm run start
+
+```
 
 
+###  Running the test 
 
+```bash
+npm test
 
-
+```
 ---
 
 
